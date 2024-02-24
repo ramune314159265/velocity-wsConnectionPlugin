@@ -22,8 +22,8 @@ public class WsConnectionPluginVelocity {
 
     @Inject
     public WsConnectionPluginVelocity(ProxyServer server, Logger logger){
-        this.logger = logger;
-        this.server = server;
+        WsConnectionPluginVelocity.logger = logger;
+        WsConnectionPluginVelocity.server = server;
     }
 
     @Subscribe

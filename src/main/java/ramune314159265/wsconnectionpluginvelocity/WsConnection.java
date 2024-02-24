@@ -25,8 +25,7 @@ public class WsConnection {
 			}
 			@Override
 			public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
-				System.out.println("onText");
-				System.out.println(data);
+				logger.info((String) data);
 				return null;
 			}
 		};
