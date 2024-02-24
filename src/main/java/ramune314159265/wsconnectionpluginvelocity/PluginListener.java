@@ -16,7 +16,7 @@ public class PluginListener {
 		if(Objects.isNull(event.getPreviousServer())){
 			dataToSend = new PlayerConnectedEvent(joinedServerId);
 		} else {
-			String previousJoinedServerId = event.getOriginalServer().getServerInfo().getName();
+			String previousJoinedServerId = event.getPreviousServer().getServerInfo().getName();
 			dataToSend = new PlayerMovedEvent(joinedServerId,previousJoinedServerId);
 		}
 
