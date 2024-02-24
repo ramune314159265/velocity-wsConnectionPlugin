@@ -45,4 +45,7 @@ public class WsConnection {
 
 		this.ws.sendText(json,true);
 	}
+	public void disconnect(){
+		this.ws.sendClose(0,"disconnect() called");
+	}
 }

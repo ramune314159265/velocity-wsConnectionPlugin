@@ -39,6 +39,8 @@ public class WsConnectionPluginVelocity {
 
     @Subscribe
     public void onProxyShutdown(ProxyShutdownEvent event){
-        logger.info("stopped");
+        logger.info("disconnecting...");
+
+        WsConnectionPluginVelocity.wsConnection.disconnect();
     }
 }
