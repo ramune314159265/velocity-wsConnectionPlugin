@@ -12,7 +12,7 @@ import static ramune314159265.wsconnectionpluginvelocity.WsConnectionPluginVeloc
 public class WsConnection {
 
 	public WebSocket ws;
-	public void init(String[] args) throws ExecutionException, InterruptedException {
+	public void init() throws ExecutionException, InterruptedException {
 		String wsUrl = "ws://localhost:8000/";
 
 		HttpClient client = HttpClient.newHttpClient();
