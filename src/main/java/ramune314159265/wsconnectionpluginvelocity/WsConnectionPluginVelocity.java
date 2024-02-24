@@ -8,8 +8,6 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
 
-import java.util.concurrent.ExecutionException;
-
 @Plugin(
         id = "wsconnectionpluginvelocity",
         name = "WsConnectionPluginVelocity",
