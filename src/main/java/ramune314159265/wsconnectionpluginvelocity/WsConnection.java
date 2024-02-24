@@ -1,5 +1,7 @@
 package ramune314159265.wsconnectionpluginvelocity;
 
+import com.google.gson.Gson;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
@@ -32,5 +34,11 @@ public class WsConnection {
 
 		CompletableFuture<WebSocket> comp = wsb.buildAsync(URI.create(wsUrl), listener);
 		this.ws = comp.get();
+	}
+	public void sendJSON(Object data){
+		Gson gson = new Gson();
+		String json = gson.toJson(data);
+
+		this.ws.sendText(json,true);
 	}
 }

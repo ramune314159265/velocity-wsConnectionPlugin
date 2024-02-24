@@ -8,6 +8,8 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
 
+import java.util.concurrent.ExecutionException;
+
 @Plugin(
         id = "wsconnectionpluginvelocity",
         name = "WsConnectionPluginVelocity",
@@ -19,6 +21,7 @@ public class WsConnectionPluginVelocity {
 
     public static ProxyServer server;
     public static Logger logger;
+    public static WsConnection wsConnection;
 
     @Inject
     public WsConnectionPluginVelocity(ProxyServer server, Logger logger){
@@ -28,7 +31,14 @@ public class WsConnectionPluginVelocity {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        logger.info("starting...");
+        logger.info("connecting...");
+
+        try {
+            WsConnectionPluginVelocity.wsConnection = new WsConnection();
+            WsConnectionPluginVelocity.wsConnection.init();
+        } catch (ExecutionException | InterruptedException e){
+            logger.error(e.toString());
+        }
 
         server.getEventManager().register(this, new PluginListener());
     }
