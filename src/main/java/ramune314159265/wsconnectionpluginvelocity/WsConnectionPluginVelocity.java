@@ -33,12 +33,8 @@ public class WsConnectionPluginVelocity {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         logger.info("connecting...");
 
-        try {
-            WsConnectionPluginVelocity.wsConnection = new WsConnection();
-            WsConnectionPluginVelocity.wsConnection.init();
-        } catch (ExecutionException | InterruptedException e){
-            logger.error(e.toString());
-        }
+        WsConnectionPluginVelocity.wsConnection = new WsConnection();
+        WsConnectionPluginVelocity.wsConnection.init();
 
         server.getEventManager().register(this, new PluginListener());
     }

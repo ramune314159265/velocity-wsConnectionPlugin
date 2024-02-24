@@ -14,7 +14,7 @@ import static ramune314159265.wsconnectionpluginvelocity.WsConnectionPluginVeloc
 public class WsConnection {
 
 	public WebSocket ws;
-	public void init() throws ExecutionException, InterruptedException {
+	public void init() {
 		String wsUrl = "ws://localhost:8000/";
 
 		HttpClient client = HttpClient.newHttpClient();
@@ -33,7 +33,11 @@ public class WsConnection {
 		};
 
 		CompletableFuture<WebSocket> comp = wsb.buildAsync(URI.create(wsUrl), listener);
-		this.ws = comp.get();
+		try {
+			this.ws = comp.get();
+		} catch (ExecutionException | InterruptedException e) {
+			logger.error(e.toString());
+		}
 	}
 	public void sendJSON(Object data){
 		Gson gson = new Gson();
