@@ -51,6 +51,6 @@ public class WsConnection {
 	}
 
 	public void disconnect() {
-		this.ws.sendClose(0, "disconnect() called");
+		this.ws.sendClose(1000, "disconnect() called");
 	}
 }
