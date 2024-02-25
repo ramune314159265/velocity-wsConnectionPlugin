@@ -1,9 +1,11 @@
 package ramune314159265.wsconnectionpluginvelocity;
 
 import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.player.ServerPreConnectEvent;
 import ramune314159265.wsconnectionpluginvelocity.events.Event;
 import ramune314159265.wsconnectionpluginvelocity.events.PlayerConnectedEvent;
+import ramune314159265.wsconnectionpluginvelocity.events.PlayerDisconnectedEvent;
 import ramune314159265.wsconnectionpluginvelocity.events.PlayerMovedEvent;
 
 import java.util.Objects;
@@ -23,5 +25,11 @@ public class PluginListener {
 		}
 
 		WsConnectionPluginVelocity.wsConnection.sendEventData(eventDataToSend);
+	}
+
+	@Subscribe
+	public void onDisconnectEvent(DisconnectEvent event){
+		String playerId = event.getPlayer().getUsername();
+		WsConnectionPluginVelocity.wsConnection.sendEventData(new PlayerDisconnectedEvent(playerId));
 	}
 }
