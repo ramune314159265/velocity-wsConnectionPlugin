@@ -1,17 +1,24 @@
 package ramune314159265.wsconnectionpluginvelocity;
 
 import com.google.inject.Inject;
+import com.moandjiezana.toml.Toml;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ListenerBoundEvent;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyReloadEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
+import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
 import ramune314159265.wsconnectionpluginvelocity.events.ServerStartedEvent;
 import ramune314159265.wsconnectionpluginvelocity.events.ServerStoppedEvent;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 
 @Plugin(
@@ -22,17 +29,41 @@ import java.util.HashMap;
 		authors = {"Ramune"}
 )
 public class WsConnectionPluginVelocity {
-
 	public static ProxyServer server;
 	public static Logger logger;
+	public static Path configFolder;
 	public static WsConnection wsConnection;
 	public static HashMap<String, String> playerConnectingServerMap;
 
+	public String wsUrl;
+
 	@Inject
-	public WsConnectionPluginVelocity(ProxyServer server, Logger logger) {
+	public WsConnectionPluginVelocity(ProxyServer server, Logger logger, @DataDirectory Path configFolder) {
 		WsConnectionPluginVelocity.logger = logger;
 		WsConnectionPluginVelocity.server = server;
+		WsConnectionPluginVelocity.configFolder = configFolder;
 		WsConnectionPluginVelocity.playerConnectingServerMap = new HashMap<>();
+
+		File folder = configFolder.toFile();
+		File configFile = new File(folder, "conf.toml");
+		if (!configFile.getParentFile().exists()) {
+			configFile.getParentFile().mkdirs();
+		}
+
+		if (!configFile.exists()) {
+			try (InputStream input = WsConnectionPluginVelocity.class.getResourceAsStream("/" + configFile.getName())) {
+				if (input != null) {
+					Files.copy(input, configFile.toPath());
+				} else {
+					configFile.createNewFile();
+				}
+			} catch (IOException e) {
+				logger.error(e.toString());
+			}
+		}
+		Toml configToml = new Toml().read(configFile);
+
+		this.wsUrl = configToml.getString("wsUrl");
 	}
 
 	@Subscribe
@@ -40,7 +71,7 @@ public class WsConnectionPluginVelocity {
 		logger.info("connecting...");
 
 		WsConnectionPluginVelocity.wsConnection = new WsConnection();
-		WsConnectionPluginVelocity.wsConnection.init("localhost:8000");
+		WsConnectionPluginVelocity.wsConnection.init(this.wsUrl);
 
 		server.getEventManager().register(this, new PluginListener());
 	}
@@ -56,7 +87,7 @@ public class WsConnectionPluginVelocity {
 		WsConnectionPluginVelocity.wsConnection.disconnect();
 
 		WsConnectionPluginVelocity.wsConnection = new WsConnection();
-		WsConnectionPluginVelocity.wsConnection.init("localhost:8000");
+		WsConnectionPluginVelocity.wsConnection.init(this.wsUrl);
 	}
 
 	@Subscribe
