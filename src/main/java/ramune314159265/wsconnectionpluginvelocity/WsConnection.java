@@ -16,9 +16,7 @@ public class WsConnection {
 
 	public WebSocket ws;
 
-	public void init() {
-		String wsUrl = "ws://localhost:8000/";
-
+	public void init(String wsUrl) {
 		HttpClient client = HttpClient.newHttpClient();
 		WebSocket.Builder wsb = client.newWebSocketBuilder();
 

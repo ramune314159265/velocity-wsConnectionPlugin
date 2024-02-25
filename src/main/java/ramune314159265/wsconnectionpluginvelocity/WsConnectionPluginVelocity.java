@@ -40,7 +40,7 @@ public class WsConnectionPluginVelocity {
 		logger.info("connecting...");
 
 		WsConnectionPluginVelocity.wsConnection = new WsConnection();
-		WsConnectionPluginVelocity.wsConnection.init();
+		WsConnectionPluginVelocity.wsConnection.init("localhost:8000");
 
 		server.getEventManager().register(this, new PluginListener());
 	}
@@ -56,7 +56,7 @@ public class WsConnectionPluginVelocity {
 		WsConnectionPluginVelocity.wsConnection.disconnect();
 
 		WsConnectionPluginVelocity.wsConnection = new WsConnection();
-		WsConnectionPluginVelocity.wsConnection.init();
+		WsConnectionPluginVelocity.wsConnection.init("localhost:8000");
 	}
 
 	@Subscribe
