@@ -31,6 +31,7 @@ public class WsConnectionPluginVelocity {
 	public WsConnectionPluginVelocity(ProxyServer server, Logger logger) {
 		WsConnectionPluginVelocity.logger = logger;
 		WsConnectionPluginVelocity.server = server;
+		WsConnectionPluginVelocity.playerConnectingServerMap = new HashMap<>();
 	}
 
 	@Subscribe
