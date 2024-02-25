@@ -29,6 +29,12 @@ public class WsConnection {
 			}
 
 			@Override
+			public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
+				logger.info("ws disconnected");
+				return null;
+			}
+
+			@Override
 			public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
 				logger.info((String) data);
 				return null;

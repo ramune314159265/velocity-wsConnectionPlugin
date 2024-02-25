@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ListenerBoundEvent;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
+import com.velocitypowered.api.event.proxy.ProxyReloadEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -47,6 +48,15 @@ public class WsConnectionPluginVelocity {
 	@Subscribe
 	public void onListenerBounded(ListenerBoundEvent event) {
 		WsConnectionPluginVelocity.wsConnection.sendEventData(new ServerStartedEvent());
+	}
+
+	@Subscribe
+	public void	onProxyReloaded(ProxyReloadEvent event){
+		logger.info("reconnecting...");
+		WsConnectionPluginVelocity.wsConnection.disconnect();
+
+		WsConnectionPluginVelocity.wsConnection = new WsConnection();
+		WsConnectionPluginVelocity.wsConnection.init();
 	}
 
 	@Subscribe
