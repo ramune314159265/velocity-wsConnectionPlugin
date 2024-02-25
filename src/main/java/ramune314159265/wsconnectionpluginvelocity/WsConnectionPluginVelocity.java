@@ -31,7 +31,7 @@ public class WsConnectionPluginVelocity {
 	}
 
 	@Subscribe
-	public void onProxyInitialization(ProxyInitializeEvent event) {
+	public void onProxyInitialized(ProxyInitializeEvent event) {
 		logger.info("connecting...");
 
 		WsConnectionPluginVelocity.wsConnection = new WsConnection();
