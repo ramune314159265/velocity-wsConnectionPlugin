@@ -11,13 +11,14 @@ public class PluginListener {
 	@Subscribe()
 	public void onServerPostConnectEvent(ServerPreConnectEvent event) {
 		String joinedServerId = event.getOriginalServer().getServerInfo().getName();
+		String playerId = event.getPlayer().getUsername();
 		Object dataToSend;
 
-		if(Objects.isNull(event.getPreviousServer())){
-			dataToSend = new PlayerConnectedEvent(joinedServerId);
+		if (Objects.isNull(event.getPreviousServer())) {
+			dataToSend = new PlayerConnectedEvent(joinedServerId, playerId);
 		} else {
 			String previousJoinedServerId = event.getPreviousServer().getServerInfo().getName();
-			dataToSend = new PlayerMovedEvent(joinedServerId,previousJoinedServerId);
+			dataToSend = new PlayerMovedEvent(joinedServerId, previousJoinedServerId, playerId);
 		}
 
 		WsConnectionPluginVelocity.wsConnection.sendJSON(dataToSend);

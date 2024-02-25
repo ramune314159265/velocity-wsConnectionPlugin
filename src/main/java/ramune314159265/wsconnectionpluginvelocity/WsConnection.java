@@ -14,6 +14,7 @@ import static ramune314159265.wsconnectionpluginvelocity.WsConnectionPluginVeloc
 public class WsConnection {
 
 	public WebSocket ws;
+
 	public void init() {
 		String wsUrl = "ws://localhost:8000/";
 
@@ -25,6 +26,7 @@ public class WsConnection {
 			public void onOpen(WebSocket webSocket) {
 				logger.info("ws connected");
 			}
+
 			@Override
 			public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
 				logger.info((String) data);
@@ -39,13 +41,15 @@ public class WsConnection {
 			logger.error(e.toString());
 		}
 	}
-	public void sendJSON(Object data){
+
+	public void sendJSON(Object data) {
 		Gson gson = new Gson();
 		String json = gson.toJson(data);
 
-		this.ws.sendText(json,true);
+		this.ws.sendText(json, true);
 	}
-	public void disconnect(){
-		this.ws.sendClose(0,"disconnect() called");
+
+	public void disconnect() {
+		this.ws.sendClose(0, "disconnect() called");
 	}
 }
