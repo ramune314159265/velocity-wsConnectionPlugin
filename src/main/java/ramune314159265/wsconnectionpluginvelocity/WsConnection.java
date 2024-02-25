@@ -1,6 +1,7 @@
 package ramune314159265.wsconnectionpluginvelocity;
 
 import com.google.gson.Gson;
+import ramune314159265.wsconnectionpluginvelocity.events.Event;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -42,7 +43,7 @@ public class WsConnection {
 		}
 	}
 
-	public void sendJSON(Object data) {
+	public void sendEventData(Event data) {
 		Gson gson = new Gson();
 		String json = gson.toJson(data);
 

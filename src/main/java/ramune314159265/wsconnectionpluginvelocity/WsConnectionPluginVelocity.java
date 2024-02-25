@@ -40,7 +40,7 @@ public class WsConnectionPluginVelocity {
 
 	@Subscribe
 	public void onProxyShutdown(ProxyShutdownEvent event) {
-        WsConnectionPluginVelocity.wsConnection.sendJSON(new ServerStoppedEvent());
+        WsConnectionPluginVelocity.wsConnection.sendEventData(new ServerStoppedEvent());
 
 		logger.info("disconnecting...");
 		WsConnectionPluginVelocity.wsConnection.disconnect();
