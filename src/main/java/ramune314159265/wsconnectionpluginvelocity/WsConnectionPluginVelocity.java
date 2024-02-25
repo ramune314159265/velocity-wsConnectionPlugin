@@ -7,6 +7,7 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
+import ramune314159265.wsconnectionpluginvelocity.events.ServerStoppedEvent;
 
 @Plugin(
 		id = "wsconnectionpluginvelocity",
@@ -39,8 +40,9 @@ public class WsConnectionPluginVelocity {
 
 	@Subscribe
 	public void onProxyShutdown(ProxyShutdownEvent event) {
-		logger.info("disconnecting...");
+        WsConnectionPluginVelocity.wsConnection.sendJSON(new ServerStoppedEvent());
 
+		logger.info("disconnecting...");
 		WsConnectionPluginVelocity.wsConnection.disconnect();
 	}
 }
