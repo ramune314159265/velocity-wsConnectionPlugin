@@ -16,7 +16,7 @@ public class PluginListener {
 		String joinedServerId = event.getOriginalServer().getServerInfo().getName();
 		String playerId = event.getPlayer().getUsername();
 
-		WsConnectionPluginVelocity.playerConnectingServerMap.put(playerId, joinedServerId)
+		WsConnectionPluginVelocity.playerConnectingServerMap.put(playerId, joinedServerId);
 
 		Event eventDataToSend;
 		if (Objects.isNull(event.getPreviousServer())) {
