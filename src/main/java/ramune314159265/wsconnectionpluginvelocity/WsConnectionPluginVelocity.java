@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import ramune314159265.wsconnectionpluginvelocity.events.ServerStartedEvent;
 import ramune314159265.wsconnectionpluginvelocity.events.ServerStoppedEvent;
 
+import java.util.HashMap;
+
 @Plugin(
 		id = "wsconnectionpluginvelocity",
 		name = "WsConnectionPluginVelocity",
@@ -23,6 +25,7 @@ public class WsConnectionPluginVelocity {
 	public static ProxyServer server;
 	public static Logger logger;
 	public static WsConnection wsConnection;
+	public static HashMap<String, String> playerConnectingServerMap;
 
 	@Inject
 	public WsConnectionPluginVelocity(ProxyServer server, Logger logger) {
@@ -40,14 +43,14 @@ public class WsConnectionPluginVelocity {
 		server.getEventManager().register(this, new PluginListener());
 	}
 
-    @Subscribe
-    public void onListenerBounded(ListenerBoundEvent event){
-        WsConnectionPluginVelocity.wsConnection.sendEventData(new ServerStartedEvent());
-    }
+	@Subscribe
+	public void onListenerBounded(ListenerBoundEvent event) {
+		WsConnectionPluginVelocity.wsConnection.sendEventData(new ServerStartedEvent());
+	}
 
 	@Subscribe
 	public void onProxyShutdown(ProxyShutdownEvent event) {
-        WsConnectionPluginVelocity.wsConnection.sendEventData(new ServerStoppedEvent());
+		WsConnectionPluginVelocity.wsConnection.sendEventData(new ServerStoppedEvent());
 
 		logger.info("disconnecting...");
 		WsConnectionPluginVelocity.wsConnection.disconnect();

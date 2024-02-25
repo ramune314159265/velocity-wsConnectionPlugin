@@ -15,8 +15,10 @@ public class PluginListener {
 	public void onServerPostConnectEvent(ServerPreConnectEvent event) {
 		String joinedServerId = event.getOriginalServer().getServerInfo().getName();
 		String playerId = event.getPlayer().getUsername();
-		Event eventDataToSend;
 
+		WsConnectionPluginVelocity.playerConnectingServerMap.put(playerId, joinedServerId)
+
+		Event eventDataToSend;
 		if (Objects.isNull(event.getPreviousServer())) {
 			eventDataToSend = new PlayerConnectedEvent(joinedServerId, playerId);
 		} else {
@@ -28,8 +30,9 @@ public class PluginListener {
 	}
 
 	@Subscribe
-	public void onDisconnectEvent(DisconnectEvent event){
+	public void onDisconnectEvent(DisconnectEvent event) {
 		String playerId = event.getPlayer().getUsername();
-		WsConnectionPluginVelocity.wsConnection.sendEventData(new PlayerDisconnectedEvent(playerId));
+		String previousJoinedServerId = WsConnectionPluginVelocity.playerConnectingServerMap.get(playerId);
+		WsConnectionPluginVelocity.wsConnection.sendEventData(new PlayerDisconnectedEvent(playerId, previousJoinedServerId));
 	}
 }
