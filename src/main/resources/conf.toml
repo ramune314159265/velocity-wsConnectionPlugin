@@ -1,1 +1,2 @@
 wsUrl = "ws://localhost:8000/"
+serverId = "proxy"

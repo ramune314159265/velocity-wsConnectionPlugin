@@ -35,7 +35,8 @@ public class WsConnectionPluginVelocity {
 	public static WsConnection wsConnection;
 	public static HashMap<String, String> playerConnectingServerMap;
 
-	public String wsUrl;
+	public static String wsUrl;
+	public static String serverId;
 
 	@Inject
 	public WsConnectionPluginVelocity(ProxyServer server, Logger logger, @DataDirectory Path configFolder) {
@@ -63,7 +64,8 @@ public class WsConnectionPluginVelocity {
 		}
 		Toml configToml = new Toml().read(configFile);
 
-		this.wsUrl = configToml.getString("wsUrl");
+		WsConnectionPluginVelocity.wsUrl = configToml.getString("wsUrl");
+		WsConnectionPluginVelocity.serverId = configToml.getString("serverId");
 	}
 
 	@Subscribe
@@ -71,7 +73,7 @@ public class WsConnectionPluginVelocity {
 		logger.info("connecting...");
 
 		WsConnectionPluginVelocity.wsConnection = new WsConnection();
-		WsConnectionPluginVelocity.wsConnection.init(this.wsUrl);
+		WsConnectionPluginVelocity.wsConnection.init(WsConnectionPluginVelocity.wsUrl);
 
 		server.getEventManager().register(this, new PluginListener());
 	}
@@ -87,7 +89,7 @@ public class WsConnectionPluginVelocity {
 		WsConnectionPluginVelocity.wsConnection.disconnect();
 
 		WsConnectionPluginVelocity.wsConnection = new WsConnection();
-		WsConnectionPluginVelocity.wsConnection.init(this.wsUrl);
+		WsConnectionPluginVelocity.wsConnection.init(WsConnectionPluginVelocity.wsUrl);
 	}
 
 	@Subscribe
