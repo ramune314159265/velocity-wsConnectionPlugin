@@ -76,10 +76,7 @@ public class WsConnectionPluginVelocity {
 		WsConnectionPluginVelocity.wsConnection.init(WsConnectionPluginVelocity.wsUrl);
 
 		server.getEventManager().register(this, new PluginListener());
-	}
 
-	@Subscribe
-	public void onListenerBounded(ListenerBoundEvent event) {
 		WsConnectionPluginVelocity.wsConnection.sendEventData(new ServerStartedEvent());
 	}
 
