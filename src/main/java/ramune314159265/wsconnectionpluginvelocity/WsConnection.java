@@ -6,6 +6,7 @@ import ramune314159265.wsconnectionpluginvelocity.events.Event;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
@@ -43,11 +44,16 @@ public class WsConnection {
 		try {
 			this.ws = comp.get();
 		} catch (ExecutionException | InterruptedException e) {
-			logger.error(e.toString());
+			logger.error("wsに接続できませんでした");
 		}
 	}
 
 	public void sendEventData(Event data) {
+		if(Objects.isNull(this.ws)){
+			logger.warn("wsが接続されていないため送信できません");
+			return;
+		}
+
 		Gson gson = new Gson();
 		String json = gson.toJson(data);
 
@@ -55,6 +61,10 @@ public class WsConnection {
 	}
 
 	public void disconnect() {
+		if(Objects.isNull(this.ws)){
+			return;
+		}
+
 		this.ws.sendClose(1000, "disconnect() called");
 	}
 }
