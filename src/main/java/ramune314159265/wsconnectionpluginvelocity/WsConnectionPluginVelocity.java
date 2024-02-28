@@ -45,6 +45,10 @@ public class WsConnectionPluginVelocity {
 		WsConnectionPluginVelocity.configFolder = configFolder;
 		WsConnectionPluginVelocity.playerConnectingServerMap = new HashMap<>();
 
+		this.loadConf();
+	}
+
+	public void loadConf(){
 		File folder = configFolder.toFile();
 		File configFile = new File(folder, "conf.toml");
 		if (!configFile.getParentFile().exists()) {
@@ -85,6 +89,7 @@ public class WsConnectionPluginVelocity {
 		logger.info("reconnecting...");
 		WsConnectionPluginVelocity.wsConnection.disconnect();
 
+		this.loadConf();
 		WsConnectionPluginVelocity.wsConnection = new WsConnection();
 		WsConnectionPluginVelocity.wsConnection.init(WsConnectionPluginVelocity.wsUrl);
 	}
