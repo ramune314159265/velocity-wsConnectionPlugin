@@ -3,7 +3,6 @@ package ramune314159265.wsconnectionpluginvelocity;
 import com.google.inject.Inject;
 import com.moandjiezana.toml.Toml;
 import com.velocitypowered.api.event.Subscribe;
-import com.velocitypowered.api.event.proxy.ListenerBoundEvent;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyReloadEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
@@ -48,7 +47,7 @@ public class WsConnectionPluginVelocity {
 		this.loadConf();
 	}
 
-	public void loadConf(){
+	public void loadConf() {
 		File folder = configFolder.toFile();
 		File configFile = new File(folder, "conf.toml");
 		if (!configFile.getParentFile().exists()) {
@@ -85,7 +84,7 @@ public class WsConnectionPluginVelocity {
 	}
 
 	@Subscribe
-	public void	onProxyReloaded(ProxyReloadEvent event){
+	public void onProxyReloaded(ProxyReloadEvent event) {
 		logger.info("wsに再接続中...");
 		WsConnectionPluginVelocity.wsConnection.disconnect();
 

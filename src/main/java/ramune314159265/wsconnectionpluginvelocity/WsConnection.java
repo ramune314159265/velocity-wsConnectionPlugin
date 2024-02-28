@@ -49,7 +49,7 @@ public class WsConnection {
 	}
 
 	public void sendEventData(Event data) {
-		if(Objects.isNull(this.ws)){
+		if (Objects.isNull(this.ws)) {
 			logger.warn("wsが接続されていないため送信できません");
 			return;
 		}
@@ -61,7 +61,7 @@ public class WsConnection {
 	}
 
 	public void disconnect() {
-		if(Objects.isNull(this.ws)){
+		if (Objects.isNull(this.ws)) {
 			return;
 		}
 
