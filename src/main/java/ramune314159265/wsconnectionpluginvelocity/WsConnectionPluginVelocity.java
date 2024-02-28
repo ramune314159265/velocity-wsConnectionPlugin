@@ -74,7 +74,7 @@ public class WsConnectionPluginVelocity {
 
 	@Subscribe
 	public void onProxyInitialized(ProxyInitializeEvent event) {
-		logger.info("connecting...");
+		logger.info("wsに接続中...");
 
 		WsConnectionPluginVelocity.wsConnection = new WsConnection();
 		WsConnectionPluginVelocity.wsConnection.init(WsConnectionPluginVelocity.wsUrl);
@@ -86,7 +86,7 @@ public class WsConnectionPluginVelocity {
 
 	@Subscribe
 	public void	onProxyReloaded(ProxyReloadEvent event){
-		logger.info("reconnecting...");
+		logger.info("wsに再接続中...");
 		WsConnectionPluginVelocity.wsConnection.disconnect();
 
 		this.loadConf();
@@ -98,7 +98,7 @@ public class WsConnectionPluginVelocity {
 	public void onProxyShutdown(ProxyShutdownEvent event) {
 		WsConnectionPluginVelocity.wsConnection.sendEventData(new ServerStoppedEvent());
 
-		logger.info("disconnecting...");
+		logger.info("wsを切断中...");
 		WsConnectionPluginVelocity.wsConnection.disconnect();
 	}
 }

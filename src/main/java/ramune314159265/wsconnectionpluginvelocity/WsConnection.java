@@ -24,12 +24,12 @@ public class WsConnection {
 		WebSocket.Listener listener = new WebSocket.Listener() {
 			@Override
 			public void onOpen(WebSocket webSocket) {
-				logger.info("ws connected");
+				logger.info("wsに接続しました");
 			}
 
 			@Override
 			public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
-				logger.info("ws disconnected");
+				logger.info("wsから切断しました");
 				return null;
 			}
 
