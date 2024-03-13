@@ -8,7 +8,7 @@ public class PlayerChattedEvent extends Event {
 	public String serverId;
 	public String proxyId;
 
-	public PlayerChattedEvent(String content, String playerId,String serverId) {
+	public PlayerChattedEvent(String content, String playerId, String serverId) {
 		super();
 		this.type = "player_chatted";
 		this.content = content;

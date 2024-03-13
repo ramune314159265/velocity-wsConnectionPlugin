@@ -9,6 +9,8 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.slf4j.Logger;
 import ramune314159265.wsconnectionpluginvelocity.events.ServerStartedEvent;
 import ramune314159265.wsconnectionpluginvelocity.events.ServerStoppedEvent;
@@ -19,6 +21,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Objects;
 
 @Plugin(
 		id = "wsconnectionpluginvelocity",
@@ -37,6 +40,11 @@ public class WsConnectionPluginVelocity {
 	public static String wsUrl;
 	public static String serverId;
 
+	public static void dataReceived(ReceivedData data){
+		if(Objects.equals(data.type, "send_chat")){
+			server.sendMessage(MiniMessage.miniMessage().deserialize(data.content));
+		}
+	}
 	@Inject
 	public WsConnectionPluginVelocity(ProxyServer server, Logger logger, @DataDirectory Path configFolder) {
 		WsConnectionPluginVelocity.logger = logger;

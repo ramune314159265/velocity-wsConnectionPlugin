@@ -25,6 +25,7 @@ public class WsConnection {
 			@Override
 			public void onOpen(WebSocket webSocket) {
 				logger.info("wsに接続しました");
+				WebSocket.Listener.super.onOpen(webSocket);
 			}
 
 			@Override
@@ -34,18 +35,23 @@ public class WsConnection {
 			}
 
 			@Override
+			public void onError(WebSocket webSocket, Throwable error) {
+				logger.error(error.toString());
+			}
+
+			@Override
 			public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
-				logger.info((String) data);
-				return null;
+				logger.info(data.toString());
+				Gson gson = new Gson();
+				ReceivedData receivedData = gson.fromJson(data.toString(), ReceivedData.class);
+				WsConnectionPluginVelocity.dataReceived(receivedData);
+				return WebSocket.Listener.super.onText(webSocket, data, last);
 			}
 		};
 
 		CompletableFuture<WebSocket> comp = wsb.buildAsync(URI.create(wsUrl), listener);
-		try {
-			this.ws = comp.get();
-		} catch (ExecutionException | InterruptedException e) {
-			logger.error("wsに接続できませんでした");
-		}
+		this.ws = comp.join();
+		this.ws.request(100000);
 	}
 
 	public void sendEventData(Event data) {
@@ -65,6 +71,11 @@ public class WsConnection {
 			return;
 		}
 
-		this.ws.sendClose(1000, "disconnect() called");
+		CompletableFuture<WebSocket> end = this.ws.sendClose(WebSocket.NORMAL_CLOSURE, "disconnect() called");
+		try {
+			end.get();
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }
