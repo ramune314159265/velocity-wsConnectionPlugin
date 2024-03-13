@@ -2,11 +2,9 @@ package ramune314159265.wsconnectionpluginvelocity;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
+import com.velocitypowered.api.event.player.PlayerChatEvent;
 import com.velocitypowered.api.event.player.ServerPreConnectEvent;
-import ramune314159265.wsconnectionpluginvelocity.events.Event;
-import ramune314159265.wsconnectionpluginvelocity.events.PlayerConnectedEvent;
-import ramune314159265.wsconnectionpluginvelocity.events.PlayerDisconnectedEvent;
-import ramune314159265.wsconnectionpluginvelocity.events.PlayerMovedEvent;
+import ramune314159265.wsconnectionpluginvelocity.events.*;
 
 import java.util.Objects;
 
@@ -34,5 +32,12 @@ public class PluginListener {
 		String playerId = event.getPlayer().getUsername();
 		String previousJoinedServerId = WsConnectionPluginVelocity.playerConnectingServerMap.get(playerId);
 		WsConnectionPluginVelocity.wsConnection.sendEventData(new PlayerDisconnectedEvent(playerId, previousJoinedServerId));
+	}
+
+	@Subscribe
+	public void onPlayerChattedEvent(PlayerChatEvent event){
+		String playerId = event.getPlayer().getUsername();
+		String content = event.getMessage();
+		WsConnectionPluginVelocity.wsConnection.sendEventData(new PlayerChattedEvent(content,playerId));
 	}
 }
