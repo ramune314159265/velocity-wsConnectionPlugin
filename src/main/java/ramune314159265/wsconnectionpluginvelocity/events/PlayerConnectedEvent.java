@@ -6,7 +6,7 @@ public class PlayerConnectedEvent extends Event {
 
 	public PlayerConnectedEvent(String joinedServerId, String playerId) {
 		super();
-		this.type = "player_moved";
+		this.type = "player_connected";
 		this.joinedServerId = joinedServerId;
 		this.playerId = playerId;
 	}
