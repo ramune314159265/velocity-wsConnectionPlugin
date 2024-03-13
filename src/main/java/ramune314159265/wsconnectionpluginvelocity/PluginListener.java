@@ -38,6 +38,7 @@ public class PluginListener {
 	public void onPlayerChattedEvent(PlayerChatEvent event){
 		String playerId = event.getPlayer().getUsername();
 		String content = event.getMessage();
-		WsConnectionPluginVelocity.wsConnection.sendEventData(new PlayerChattedEvent(content,playerId));
+		String serverId = event.getPlayer().getUsername();
+		WsConnectionPluginVelocity.wsConnection.sendEventData(new PlayerChattedEvent(content,playerId,serverId));
 	}
 }
