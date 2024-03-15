@@ -2,6 +2,7 @@ package ramune314159265.wsconnectionpluginvelocity;
 
 import com.google.gson.Gson;
 import ramune314159265.wsconnectionpluginvelocity.events.Event;
+import ramune314159265.wsconnectionpluginvelocity.events.WsConnectedEvent;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -25,6 +26,9 @@ public class WsConnection {
 			@Override
 			public void onOpen(WebSocket webSocket) {
 				logger.info("wsに接続しました");
+				Gson gson = new Gson();
+				String json = gson.toJson(new WsConnectedEvent());
+				webSocket.sendText(json,true);
 				WebSocket.Listener.super.onOpen(webSocket);
 			}
 
