@@ -74,12 +74,15 @@ public class WsConnection {
 		if (Objects.isNull(this.ws)) {
 			return;
 		}
+		if(this.ws.isOutputClosed()){
+			return;
+		}
 
-		CompletableFuture<WebSocket> end = this.ws.sendClose(WebSocket.NORMAL_CLOSURE, "disconnect() called");
 		try {
+			CompletableFuture<WebSocket> end = this.ws.sendClose(WebSocket.NORMAL_CLOSURE, "disconnect() called");
 			end.get();
 		} catch (InterruptedException | ExecutionException e) {
-			throw new RuntimeException(e);
+			logger.error("disconnect error");
 		}
 	}
 }
