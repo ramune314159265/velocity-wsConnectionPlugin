@@ -9,7 +9,6 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.slf4j.Logger;
 import ramune314159265.wsconnectionpluginvelocity.events.ServerStartedEvent;
@@ -55,6 +54,12 @@ public class WsConnectionPluginVelocity {
 		this.loadConf();
 	}
 
+	public void reconnectWs(){
+		WsConnectionPluginVelocity.wsConnection.disconnect();
+		WsConnectionPluginVelocity.wsConnection = new WsConnection();
+		WsConnectionPluginVelocity.wsConnection.init(WsConnectionPluginVelocity.wsUrl);
+	}
+
 	public void loadConf() {
 		File folder = configFolder.toFile();
 		File configFile = new File(folder, "conf.toml");
@@ -93,12 +98,9 @@ public class WsConnectionPluginVelocity {
 
 	@Subscribe
 	public void onProxyReloaded(ProxyReloadEvent event) {
-		logger.info("wsに再接続中...");
-		WsConnectionPluginVelocity.wsConnection.disconnect();
-
 		this.loadConf();
-		WsConnectionPluginVelocity.wsConnection = new WsConnection();
-		WsConnectionPluginVelocity.wsConnection.init(WsConnectionPluginVelocity.wsUrl);
+		logger.info("wsに再接続中...");
+		this.reconnectWs();
 	}
 
 	@Subscribe
