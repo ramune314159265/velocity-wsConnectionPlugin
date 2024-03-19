@@ -34,6 +34,7 @@ public class WsConnectionPluginVelocity {
 	public static Logger logger;
 	public static Path configFolder;
 	public static WsConnection wsConnection;
+	public static boolean isOpeningWs;
 	public static HashMap<String, String> playerConnectingServerMap;
 
 	public static String wsUrl;
@@ -50,11 +51,12 @@ public class WsConnectionPluginVelocity {
 		WsConnectionPluginVelocity.server = server;
 		WsConnectionPluginVelocity.configFolder = configFolder;
 		WsConnectionPluginVelocity.playerConnectingServerMap = new HashMap<>();
+		WsConnectionPluginVelocity.isOpeningWs = false;
 
 		this.loadConf();
 	}
 
-	public void reconnectWs(){
+	public static void reconnectWs(){
 		WsConnectionPluginVelocity.wsConnection.disconnect();
 		WsConnectionPluginVelocity.wsConnection = new WsConnection();
 		WsConnectionPluginVelocity.wsConnection.init(WsConnectionPluginVelocity.wsUrl);
@@ -87,7 +89,7 @@ public class WsConnectionPluginVelocity {
 	@Subscribe
 	public void onProxyInitialized(ProxyInitializeEvent event) {
 		logger.info("wsに接続中...");
-
+		WsConnectionPluginVelocity.isOpeningWs = true;
 		WsConnectionPluginVelocity.wsConnection = new WsConnection();
 		WsConnectionPluginVelocity.wsConnection.init(WsConnectionPluginVelocity.wsUrl);
 
@@ -108,6 +110,7 @@ public class WsConnectionPluginVelocity {
 		WsConnectionPluginVelocity.wsConnection.sendEventData(new ServerStoppedEvent());
 
 		logger.info("wsを切断中...");
+		WsConnectionPluginVelocity.isOpeningWs = false;
 		WsConnectionPluginVelocity.wsConnection.disconnect();
 	}
 }
