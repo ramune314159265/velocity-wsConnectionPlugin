@@ -34,12 +34,12 @@ public class WsConnection {
 			public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
 				logger.info("wsから切断されました");
 				if(WsConnectionPluginVelocity.isOpeningWs){
-					logger.info("3秒後に再接続します");
+					logger.info("1秒後に再接続します");
 					ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 					exec.schedule(() -> {
 						WsConnectionPluginVelocity.reconnectWs();
 						exec.shutdown();
-					}, 3, TimeUnit.SECONDS);
+					}, 1, TimeUnit.SECONDS);
 				}
 				return null;
 			}
@@ -47,12 +47,12 @@ public class WsConnection {
 			@Override
 			public void onError(WebSocket webSocket, Throwable error) {
 				logger.error(error.toString());
-				logger.warn("3秒後に再接続します");
+				logger.warn("1秒後に再接続します");
 				ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 				exec.schedule(() -> {
 					WsConnectionPluginVelocity.reconnectWs();
 					exec.shutdown();
-				}, 3, TimeUnit.SECONDS);
+				}, 1, TimeUnit.SECONDS);
 			}
 
 			@Override
@@ -74,7 +74,7 @@ public class WsConnection {
 			exec.schedule(() -> {
 				WsConnectionPluginVelocity.reconnectWs();
 				exec.shutdown();
-			}, 3, TimeUnit.SECONDS);
+			}, 1, TimeUnit.SECONDS);
 		}
 	}
 
