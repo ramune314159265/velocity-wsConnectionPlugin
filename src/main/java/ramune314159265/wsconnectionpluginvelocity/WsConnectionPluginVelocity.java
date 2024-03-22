@@ -57,9 +57,11 @@ public class WsConnectionPluginVelocity {
 	}
 
 	public static void reconnectWs(){
+		WsConnectionPluginVelocity.isOpeningWs = false;
 		WsConnectionPluginVelocity.wsConnection.disconnect();
 		WsConnectionPluginVelocity.wsConnection = new WsConnection();
 		WsConnectionPluginVelocity.wsConnection.init(WsConnectionPluginVelocity.wsUrl);
+		WsConnectionPluginVelocity.isOpeningWs = true;
 	}
 
 	public void loadConf() {
