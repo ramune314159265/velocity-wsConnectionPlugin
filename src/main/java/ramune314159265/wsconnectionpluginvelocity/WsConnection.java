@@ -88,6 +88,10 @@ public class WsConnection {
 		String json = gson.toJson(data);
 
 		this.ws.sendText(json, true);
+		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+		exec.schedule(() -> {
+			this.ws.sendText(json, true);
+		}, 3, TimeUnit.SECONDS);
 	}
 
 	public void disconnect() {

@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Plugin(
@@ -36,14 +37,19 @@ public class WsConnectionPluginVelocity {
 	public static WsConnection wsConnection;
 	public static boolean isOpeningWs;
 	public static HashMap<String, String> playerConnectingServerMap;
+	public static HashSet<Number> receivedTimestamps;
 
 	public static String wsUrl;
 	public static String serverId;
 
 	public static void dataReceived(ReceivedData data){
+		if(WsConnectionPluginVelocity.receivedTimestamps.contains(data.timestamp)){
+			return;
+		}
 		if(Objects.equals(data.type, "send_chat")){
 			server.sendMessage(MiniMessage.miniMessage().deserialize(data.content));
 		}
+		WsConnectionPluginVelocity.receivedTimestamps.add(data.timestamp);
 	}
 	@Inject
 	public WsConnectionPluginVelocity(ProxyServer server, Logger logger, @DataDirectory Path configFolder) {
@@ -51,6 +57,7 @@ public class WsConnectionPluginVelocity {
 		WsConnectionPluginVelocity.server = server;
 		WsConnectionPluginVelocity.configFolder = configFolder;
 		WsConnectionPluginVelocity.playerConnectingServerMap = new HashMap<>();
+		WsConnectionPluginVelocity.receivedTimestamps = new HashSet<>();
 		WsConnectionPluginVelocity.isOpeningWs = false;
 
 		this.loadConf();
